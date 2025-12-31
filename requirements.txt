@@ -1,38 +1,59 @@
-# CodePulse Dependencies
-# =========================
+# CodePulse Requirements
+# =======================
+# Core dependencies for deep code intelligence
 
-# Core dependencies
-anthropic>=0.18.0          # Claude API for AI analysis
-click>=8.1.0               # CLI framework
-rich>=13.0.0               # Beautiful terminal output
-colorama>=0.4.6            # Cross-platform colored terminal text
+# ═══════════════════════════════════════════════════════════════
+# CORE ANALYSIS (Required)
+# ═══════════════════════════════════════════════════════════════
 
-# Code analysis
-ast-tools>=0.1.0           # AST manipulation tools
-radon>=6.0.0               # Code complexity metrics
-pylint>=3.0.0              # Static code analysis
-flake8>=7.0.0              # Style guide enforcement
-bandit>=1.7.5              # Security issue detection
+# Graph algorithms - Used ONLY for graph data structures
+# All analysis algorithms are custom-built!
+networkx>=3.0
 
-# Data handling
-pyyaml>=6.0                # YAML configuration files
-toml>=0.10.2               # TOML configuration files
-python-dotenv>=1.0.0       # Environment variable management
+# Note: The following are built-in Python libraries
+# Listed here for documentation:
+# - ast: AST parsing
+# - difflib: Sequence matching for clone detection
+# - hashlib: Hashing for rolling hash algorithm
+# - re: Pattern matching
+# - typing: Type hints
+# - dataclasses: Data structures
+# - collections: Specialized containers
 
-# Reporting
-jinja2>=3.1.0              # HTML template engine
-weasyprint>=60.0           # PDF generation
-markdown>=3.5.0            # Markdown processing
-plotly>=5.18.0             # Interactive charts
+# ═══════════════════════════════════════════════════════════════
+# OPTIONAL: AI INTEGRATION
+# ═══════════════════════════════════════════════════════════════
 
-# Testing (development)
-pytest>=8.0.0              # Testing framework
-pytest-cov>=4.1.0          # Coverage reporting
-pytest-mock>=3.12.0        # Mocking support
-black>=24.0.0              # Code formatting
-mypy>=1.8.0                # Type checking
+anthropic>=0.18.0  # Claude API (optional enhancement)
+openai>=1.0.0      # OpenAI GPT (optional enhancement)
 
-# Optional but recommended
-requests>=2.31.0           # HTTP requests for API calls
-aiohttp>=3.9.0             # Async HTTP (for concurrent analysis)
-tqdm>=4.66.0               # Progress bars
+# ═══════════════════════════════════════════════════════════════  
+# DEVELOPMENT DEPENDENCIES
+# ═══════════════════════════════════════════════════════════════
+# Install with: pip install -e .[dev]
+
+# Testing
+pytest>=8.0.0
+pytest-cov>=4.1.0
+
+# Code quality
+black>=24.0.0
+mypy>=1.8.0
+
+# ═══════════════════════════════════════════════════════════════
+# NOTE ABOUT DEPENDENCIES
+# ═══════════════════════════════════════════════════════════════
+# CodePulse uses MINIMAL external dependencies by design.
+# 
+# We DO NOT use:
+# - pylint (we have custom analysis)
+# - flake8 (we have custom checks)
+# - radon (we calculate our own metrics)
+# - bandit (we have custom security scanner)
+#
+# Why? To ensure:
+# ✓ Original algorithms and implementation
+# ✓ Full control over analysis logic
+# ✓ Educational value (understand how tools work)
+# ✓ Custom metrics and formulas
+# ═══════════════════════════════════════════════════════════════
