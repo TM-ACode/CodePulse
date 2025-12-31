@@ -152,27 +152,66 @@ class ComprehensiveScanner:
         return self.results
     
     def _make_json_serializable(self, obj):
-        """Convert objects to JSON-serializable format"""
+        """Convert objects to JSON-serializable format - handles all Python types"""
+        # Handle None
+        if obj is None:
+            return None
+        
+        # Handle primitives (str, int, float, bool)
+        if isinstance(obj, (str, int, float, bool)):
+            return obj
+        
+        # Handle dict
         if isinstance(obj, dict):
             return {k: self._make_json_serializable(v) for k, v in obj.items()}
-        elif isinstance(obj, list):
+        
+        # Handle list
+        if isinstance(obj, list):
             return [self._make_json_serializable(item) for item in obj]
-        elif isinstance(obj, tuple):
-            return list(obj)
-        elif isinstance(obj, set):
-            return list(obj)
-        elif hasattr(obj, '__dict__'):
-            # Convert dataclass or object to dict
-            return self._make_json_serializable(obj.__dict__)
-        elif str(type(obj)) == "<class 'mappingproxy'>":
-            # Convert mappingproxy to dict
-            return dict(obj)
-        elif hasattr(obj, '__iter__') and not isinstance(obj, (str, bytes)):
-            # Convert other iterables
+        
+        # Handle tuple
+        if isinstance(obj, tuple):
             return [self._make_json_serializable(item) for item in obj]
-        else:
-            # Return primitives as-is
-            return obj
+        
+        # Handle set
+        if isinstance(obj, set):
+            return [self._make_json_serializable(item) for item in obj]
+        
+        # Handle mappingproxy (from __dict__)
+        if str(type(obj)) == "<class 'mappingproxy'>":
+            return {k: self._make_json_serializable(v) for k, v in dict(obj).items()}
+        
+        # Handle staticmethod, classmethod, property
+        if isinstance(obj, (staticmethod, classmethod, property)):
+            return str(obj)
+        
+        # Handle functions and methods
+        if callable(obj) and not isinstance(obj, type):
+            return f"<function {getattr(obj, '__name__', 'unknown')}>"
+        
+        # Handle classes
+        if isinstance(obj, type):
+            return f"<class {obj.__name__}>"
+        
+        # Handle objects with __dict__
+        if hasattr(obj, '__dict__'):
+            try:
+                return self._make_json_serializable(dict(obj.__dict__))
+            except:
+                return str(obj)
+        
+        # Handle iterables (but not strings/bytes)
+        if hasattr(obj, '__iter__') and not isinstance(obj, (str, bytes)):
+            try:
+                return [self._make_json_serializable(item) for item in obj]
+            except:
+                return str(obj)
+        
+        # Fallback: convert to string
+        try:
+            return str(obj)
+        except:
+            return "<unserializable object>"
     
     def scan_directory(self, dir_path: str) -> Dict[str, Any]:
         """Scan all supported files in directory"""
@@ -567,10 +606,28 @@ class ComprehensiveScanner:
         return recs
     
     def save_report(self, output_path: str):
-        """Save detailed JSON report"""
-        with open(output_path, 'w') as f:
-            json.dump(self.results, f, indent=2)
-        print(f"💾 Report saved to: {output_path}")
+        """Save detailed JSON report with safe serialization"""
+        try:
+            # Make sure everything is serializable
+            safe_results = self._make_json_serializable(self.results)
+            
+            with open(output_path, 'w', encoding='utf-8') as f:
+                json.dump(safe_results, f, indent=2, ensure_ascii=False)
+            print(f"💾 Report saved to: {output_path}")
+        except Exception as e:
+            print(f"⚠️  Warning: Could not save full JSON report: {e}")
+            # Save minimal report as fallback
+            try:
+                minimal_report = {
+                    'overall_score': self.results.get('overall_score', 0),
+                    'scan_time': self.results.get('scan_time', 0),
+                    'summary': 'Full report could not be serialized'
+                }
+                with open(output_path, 'w', encoding='utf-8') as f:
+                    json.dump(minimal_report, f, indent=2)
+                print(f"💾 Minimal report saved to: {output_path}")
+            except:
+                print(f"❌ Could not save report to {output_path}")
 
 
 def main():
@@ -646,9 +703,27 @@ def main():
         
         # Save report
         report_path = f"project_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        with open(report_path, 'w') as f:
-            json.dump(results, f, indent=2)
-        print(f"\n💾 Detailed report: {report_path}")
+        try:
+            safe_results = scanner._make_json_serializable(results)
+            with open(report_path, 'w', encoding='utf-8') as f:
+                json.dump(safe_results, f, indent=2, ensure_ascii=False)
+            print(f"\n💾 Detailed report: {report_path}")
+        except Exception as e:
+            print(f"\n⚠️  Warning: Could not save full report: {e}")
+            # Save summary only
+            try:
+                summary = {
+                    'total_files': results['total_files'],
+                    'files_scanned': results['files_scanned'],
+                    'project_score': results['project_score'],
+                    'total_issues': results['total_issues']
+                }
+                with open(report_path, 'w', encoding='utf-8') as f:
+                    json.dump(summary, f, indent=2)
+                print(f"💾 Summary report saved: {report_path}")
+            except:
+                print(f"❌ Could not save report")
+        
         print(f"{'='*70}\n")
         
     else:
