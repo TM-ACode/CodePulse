@@ -28,6 +28,15 @@
    - Made linting and type checking non-blocking
    - Added proper dependency installation
    - Tests now run successfully
+   - Fixed deprecated GitHub Actions (v3 → v4)
+   - Updated CodeQL action (v2 → v3)
+   - Removed Docker build (no credentials required)
+
+6. **Packaging Fixes**
+   - Added `pyproject.toml` (modern Python packaging)
+   - Added `MANIFEST.in` for package data
+   - Removed old `setup.py` files
+   - Fixed build process
 
 ### 📝 Documentation:
 - Added `CRITICAL_FIXES.md` with detailed fixes
