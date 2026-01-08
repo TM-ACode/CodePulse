@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-# CodePulse - Professional Code Intelligence & Security Scanner
+
+# CodePulse -  Code Intelligence & Security Scanner
 
 **Version:** 0.10.1  
 **Author:** Saleh Almqati  
@@ -15,13 +15,13 @@
 [![Version](https://img.shields.io/badge/version-0.7.1-blue.svg)](https://github.com/DeftonesL/CodePulse)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
->>>>>>> a7156cca8607b0f6a582bfd698319cea39b9fadc
+
 
 ---
 
 ## Overview
 
-<<<<<<< HEAD
+
 CodePulse is a comprehensive static code analysis tool designed for professional code intelligence and security scanning. It supports 25+ programming languages and provides detailed HTML reports with security vulnerability detection, code quality analysis, and performance metrics.
 
 ---
@@ -309,12 +309,12 @@ python comprehensive_scan.py ./project
 
 # View reports
 ls reports/
->>>>>>> a7156cca8607b0f6a582bfd698319cea39b9fadc
+
 ```
 
 ---
 
-<<<<<<< HEAD
+
 ## Architecture
 
 ### Core Components
@@ -440,13 +440,13 @@ Reports are saved in `reports/` directory as JSON:
 - **70-79 (C)**: Acceptable, needs improvement
 - **60-69 (D)**: Below standard, requires attention
 - **0-59 (F)**: Critical issues, immediate action needed
->>>>>>> a7156cca8607b0f6a582bfd698319cea39b9fadc
+
 
 ---
 
 ## Documentation
 
-<<<<<<< HEAD
+
 - **Quick Start:** QUICK_START.md
 - **Technical Architecture:** docs/TECHNICAL_ARCHITECTURE.md
 - **Performance Features:** docs/PERFORMANCE_FEATURES.md
@@ -558,13 +558,12 @@ See CONTRIBUTING.md for contribution guidelines
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
->>>>>>> a7156cca8607b0f6a582bfd698319cea39b9fadc
+
 
 ---
 
 ## License
 
-<<<<<<< HEAD
 MIT License - See LICENSE file for details
 
 Copyright (c) 2026 Saleh Almqati
@@ -595,4 +594,4 @@ MIT License - see [LICENSE](LICENSE) file.
 ---
 
 **CodePulse v0.7.1** - Professional code analysis for serious developers.
->>>>>>> a7156cca8607b0f6a582bfd698319cea39b9fadc
+
